@@ -1,6 +1,7 @@
 #!/bin/bash
 echo $1
-CUR_LOC=$(pwd)
+CUR_LOC=$(dirname `which $0`)
+echo $CUR_LOC
 if [ ! -f $CUR_LOC/locations.txt ]; then
     touch $CUR_LOC/locations.txt
 fi
