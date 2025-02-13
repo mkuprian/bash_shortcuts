@@ -1,0 +1,30 @@
+#!/bin/bash
+echo $1
+CUR_LOC=$(pwd)
+if [ ! -f $CUR_LOC/locations.txt ]; then
+    touch $CUR_LOC/locations.txt
+fi
+if [ -z "$1" ]; then
+    echo "Usage: jp <shortcut>"
+    echo "-c print current directory"
+    echo "-d add directory"
+    echo "-a add current directory"
+    echo "Available shortcuts:"
+    awk -F';' '/;/ {print $1}' $CUR_LOC/locations.txt
+elif [[ "$1" =~ ^- ]]; then
+	echo "found dash moving to next eval"
+	if [[ "$1" =~ ^-c ]]; then
+		echo "printing current directory"
+		source functions.sh
+		echo_current_loc
+    elif [[ "$1" =~ ^-a ]]; then
+        source functions.sh
+        add_current_dir
+    else
+        echo "unknown command"
+	fi
+else
+    source functions.sh
+    goto_location $1
+    exec bash
+fi
